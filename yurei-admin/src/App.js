@@ -1,24 +1,27 @@
-import logo from './logo.svg';
 import './App.css';
+import { useEffect, useState } from 'react';
+import { getAnimePosts, getComicPosts } from './apis';
+import Box from '@mui/material/Box';
 
 function App() {
+  const [postsAnime, setPostsAnime] = useState()
+  const [postsComic, setPostsComic] = useState()
+
+  useEffect(() => {
+    getAnimePosts().then(response => setPostsAnime(response))
+    getComicPosts().then(response => setPostsComic(response))
+  }, [])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Box>
+      <Box sx={{mb: '40px'}}>
+        <h1 style={{color: 'red'}}>Animes: {postsAnime && postsAnime.length}</h1>
+        {postsAnime ? postsAnime.items.map(item => <h1 key={item.id}>{item.title}</h1>) : <>Loading...</>} 
+      </Box>   
+      <Box>
+        <h1 style={{color: 'red'}}>Comics: {postsComic && postsComic.length}</h1>
+        {postsComic ? postsComic.items.map(item => <h1 key={item.id}>{item.title}</h1>) : <>Loading...</>} 
+      </Box>   
+    </Box>
   );
 }
 
