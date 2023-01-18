@@ -9,18 +9,20 @@ import {
   getContentComicFromHTML,
 } from "./utils";
 import TabPanel from "./components/TabPanel";
+import TableMember from "./components/TableMember";
+import TableAnime from "./components/TableAnime";
 
 function App() {
-  const [postsAnime, setPostsAnime] = useState();
   const [postsLiveAction, setPostsLiveAction] = useState();
+  const [postsAnime, setPostsAnime] = useState();
   const [postsComic, setPostsComic] = useState();
   const [memberList, setMemberList] = useState();
   const [value, setValue] = useState(0);
 
   useEffect(() => {
     getAnimePosts().then((response) => {
-      setPostsAnime(response.animes);
       setPostsLiveAction(response.liveActions);
+      setPostsAnime(response.animes);
     });
     getComicPosts().then((response) => setPostsComic(response));
     getMemberList().then((response) => setMemberList(response));
@@ -39,7 +41,7 @@ function App() {
   };
 
   return (
-    <Box width={"60%"} margin="0 auto">
+    <Box width={"80%"} margin="0 auto">
       <Typography component="h1" fontSize="3rem" marginBottom="20px">Hệ thống quản lý tài nguyên Yurei</Typography>
       <Box sx={{ width: '100%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -51,61 +53,7 @@ function App() {
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
-          <Box sx={{ mb: "40px" }}>
-          <Typography
-            component="h1"
-            sx={{ color: "red", fontWeight: "bold", fontSize: "30px" }}
-          >
-            Animes: {postsAnime && postsAnime.length}
-          </Typography>
-          {postsAnime ? (
-            postsAnime.map((item) => (
-              <Box
-                sx={{
-                  borderTop: "10px solid red",
-                  borderBottom: "10px solid red",
-                  m: "40px 0",
-                }}
-              >
-                <h1 key={item.id}>{item.title}</h1>
-                <Typography
-                  key={Math.random()}
-                  component="img"
-                  src={getImageURLFromContent(item.content)}
-                  alt="temp_image"
-                  width={"300px"}
-                ></Typography>
-                <Typography component="p" fontWeight={"bold"}>
-                  Tên Anime: {getContentFromHTML(item.content).fullName}
-                </Typography>
-                <Typography component="p" fontWeight={"bold"}>
-                  Số tập: {getContentFromHTML(item.content).fullEpisodes}
-                </Typography>
-                <Typography component="div" fontWeight={"bold"}>
-                  Thể loại:{" "}
-                  {getContentFromHTML(item.content).fullCategories.map((cat) => (
-                    <Typography component="p" marginLeft={"10px"}>
-                      {cat}
-                    </Typography>
-                  ))}
-                </Typography>
-                <Typography component="div" fontWeight={"bold"}>
-                  Nhân sự:{" "}
-                  {getContentFromHTML(item.content).fullStaffs.map((staff) => (
-                    <Typography component="p" marginLeft={"10px"}>
-                      {staff}
-                    </Typography>
-                  ))}
-                </Typography>
-                <Typography component="p" fontWeight={"bold"}>
-                  Nội dung: {getContentFromHTML(item.content).fullSummary}
-                </Typography>
-              </Box>
-            ))
-          ) : (
-            <>Loading...</>
-          )}
-          </Box>
+          <TableAnime data={postsAnime}/>
         </TabPanel>
         <TabPanel value={value} index={1}>
           <Box sx={{ mb: "40px" }}>
@@ -207,21 +155,7 @@ function App() {
           </Box>
         </TabPanel>
         <TabPanel value={value} index={3}>
-          <Box>
-          <Typography
-            component="h1"
-            sx={{ color: "red", fontWeight: "bold", fontSize: "25px" }}
-          >
-            Members: {memberList && memberList.length}
-          </Typography>
-          {memberList ? (
-            memberList.map((item) => (
-              <h1 key={Math.random()}>Nickname: {item["Nickname"]} - Team: {item["Team"]} - Vị trí: {item["Vị trí"]}</h1>
-            ))
-          ) : (
-            <>Loading...</>
-          )}
-          </Box>
+          <TableMember data={memberList}/>
         </TabPanel>
       </Box>
 
