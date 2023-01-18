@@ -16,7 +16,9 @@ export const getAnimePosts = async () => {
             maxResults: Global.MAX_RESULTS
         }
       });
-      return response.data
+      let liveActions = response.data.items.filter(item => item.title.includes("Live action"))
+      let animes = response.data.items.filter(item => !item.title.includes("Live action"))
+      return {animes, liveActions}
     } catch (error) {
       return error;
     }
