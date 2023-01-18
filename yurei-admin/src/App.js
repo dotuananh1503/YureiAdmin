@@ -27,8 +27,8 @@ function App() {
         {postsComic ? postsComic.items.map(item => <h1 key={item.id}>{item.title}</h1>) : <>Loading...</>} 
       </Box>   
        <Box>
-        <Typography component="h1" sx={{color: 'red', fontWeight: 'bold', fontSize: '30px'}}>Members: {postsComic && postsComic.length}</Typography>
-        {memberList ? memberList.map(item => <h1 key={item.id}>{item["Nickname"]}</h1>) : <>Loading...</>} 
+        <Typography component="h1" sx={{color: 'red', fontWeight: 'bold', fontSize: '30px'}}>Members: {memberList && memberList.length}</Typography>
+        {memberList ? memberList.map(item => <h1 key={item}>{item["Nickname"]}</h1>) : <>Loading...</>} 
       </Box>  
     </Box>
   );
