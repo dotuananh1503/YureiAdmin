@@ -27,7 +27,7 @@ function App() {
         {postsLiveAction ? postsLiveAction.map(item => <h1 key={item.id}>{item.title}</h1>) : <>Loading...</>} 
       </Box> 
       <Box>
-        <Typography component="h1" sx={{color: 'red', fontWeight: 'bold', fontSize: '30px'}}>Comics: {postsComic && postsComic.length}</Typography>
+        <Typography component="h1" sx={{color: 'red', fontWeight: 'bold', fontSize: '30px'}}>Comics: {postsComic && postsComic.items.length}</Typography>
         {postsComic ? postsComic.items.map(item => <h1 key={item.id}>{item.title}</h1>) : <>Loading...</>} 
       </Box>   
        <Box>
