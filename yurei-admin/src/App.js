@@ -19,13 +19,17 @@ function App() {
   return (
     <Box>
       <Box sx={{mb: '40px'}}>
-        <Typography component="h1" sx={{color: 'red'}}>Animes: {postsAnime && postsAnime.length}</Typography>
+        <Typography component="h1" sx={{color: 'red', fontWeight: 'bold'}}>Animes: {postsAnime && postsAnime.length}</Typography>
         {postsAnime ? postsAnime.items.map(item => <h1 key={item.id}>{item.title}</h1>) : <>Loading...</>} 
       </Box>   
       <Box>
-        <Typography component="h1" sx={{color: 'red'}}>Comics: {postsComic && postsComic.length}</Typography>
+        <Typography component="h1" sx={{color: 'red', fontWeight: 'bold'}}>Comics: {postsComic && postsComic.length}</Typography>
         {postsComic ? postsComic.items.map(item => <h1 key={item.id}>{item.title}</h1>) : <>Loading...</>} 
       </Box>   
+       <Box>
+        <Typography component="h1" sx={{color: 'red', fontWeight: 'bold'}}>Members: {postsComic && postsComic.length}</Typography>
+        {memberList ? memberList.map(item => <h1 key={item.id}>{item["Nickname"]}</h1>) : <>Loading...</>} 
+      </Box>  
     </Box>
   );
 }
