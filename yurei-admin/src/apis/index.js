@@ -39,9 +39,9 @@ export const getComicPosts = async () => {
     }
 }
 
-export const getMemberList = async () => {
+export const getMemberList = async (sheetID = 1) => {
   try {
-    const response = await axios.get(`https://opensheet.elk.sh/1PrUFQj43Aqpq7UP6InyO-Ez0aHtgpFVVvo9946UXsXY/1`);
+    const response = await axios.get(`https://opensheet.elk.sh/1PrUFQj43Aqpq7UP6InyO-Ez0aHtgpFVVvo9946UXsXY/${sheetID}`);
     return response.data;
   } catch (error) {
     return error;
