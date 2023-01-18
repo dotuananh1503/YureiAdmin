@@ -40,7 +40,7 @@ export const getComicPosts = async () => {
 export const getMemberList = async () => {
   try {
     const response = await axios.get(`https://opensheet.elk.sh/1PrUFQj43Aqpq7UP6InyO-Ez0aHtgpFVVvo9946UXsXY/1`);
-    console.log(response)
+    return response.data;
   } catch (error) {
     return error;
   }
