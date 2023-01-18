@@ -210,7 +210,7 @@ function App() {
           <Box>
           <Typography
             component="h1"
-            sx={{ color: "red", fontWeight: "bold", fontSize: "30px" }}
+            sx={{ color: "red", fontWeight: "bold", fontSize: "25px" }}
           >
             Members: {memberList && memberList.length}
           </Typography>
