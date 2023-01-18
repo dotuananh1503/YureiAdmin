@@ -14,7 +14,6 @@ function App() {
     getAnimePosts().then(response => {setPostsAnime(response.animes); setPostsLiveAction(response.liveActions)})
     getComicPosts().then(response => setPostsComic(response))
     getMemberList().then(response => setMemberList(response))
-    console.log(memberList)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   return (
@@ -24,7 +23,7 @@ function App() {
         {postsAnime ? postsAnime.map(item => <h1 key={item.id}>{item.title}</h1>) : <>Loading...</>} 
       </Box>   
       <Box sx={{mb: '40px'}}>
-        <Typography component="h1" sx={{color: 'red', fontWeight: 'bold', fontSize: '30px'}}>Animes: {postsLiveAction && postsLiveAction.length}</Typography>
+        <Typography component="h1" sx={{color: 'red', fontWeight: 'bold', fontSize: '30px'}}>Live Actions: {postsLiveAction && postsLiveAction.length}</Typography>
         {postsLiveAction ? postsLiveAction.map(item => <h1 key={item.id}>{item.title}</h1>) : <>Loading...</>} 
       </Box> 
       <Box>
