@@ -10,7 +10,7 @@ function App() {
   const [memberList, setMemberList] = useState()
 
   useEffect(() => {
-    getAnimePosts().then(response => setPostsAnime(response))
+    getAnimePosts().then(response => setPostsAnime(response.animes))
     getComicPosts().then(response => setPostsComic(response))
     getMemberList().then(response => setMemberList(response))
     console.log(memberList)
@@ -20,7 +20,7 @@ function App() {
     <Box>
       <Box sx={{mb: '40px'}}>
         <Typography component="h1" sx={{color: 'red', fontWeight: 'bold', fontSize: '30px'}}>Animes: {postsAnime && postsAnime.length}</Typography>
-        {postsAnime ? postsAnime.items.map(item => <h1 key={item.id}>{item.title}</h1>) : <>Loading...</>} 
+        {postsAnime ? postsAnime.map(item => <h1 key={item.id}>{item.title}</h1>) : <>Loading...</>} 
       </Box>   
       <Box>
         <Typography component="h1" sx={{color: 'red', fontWeight: 'bold', fontSize: '30px'}}>Comics: {postsComic && postsComic.length}</Typography>
