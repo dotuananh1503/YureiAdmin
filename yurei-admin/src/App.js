@@ -19,11 +19,11 @@ function App() {
   return (
     <Box>
       <Box sx={{mb: '40px'}}>
-        <Typography sx={{color: 'red'}}>Animes: {postsAnime && postsAnime.length}</Typography>
+        <Typography component="h1" sx={{color: 'red'}}>Animes: {postsAnime && postsAnime.length}</Typography>
         {postsAnime ? postsAnime.items.map(item => <h1 key={item.id}>{item.title}</h1>) : <>Loading...</>} 
       </Box>   
       <Box>
-        <Typography sx={{color: 'red'}}>Comics: {postsComic && postsComic.length}</Typography>
+        <Typography component="h1" sx={{color: 'red'}}>Comics: {postsComic && postsComic.length}</Typography>
         {postsComic ? postsComic.items.map(item => <h1 key={item.id}>{item.title}</h1>) : <>Loading...</>} 
       </Box>   
     </Box>
