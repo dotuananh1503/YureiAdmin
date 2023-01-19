@@ -60,7 +60,7 @@ function Home() {
 
   return (
     <Box width={"80%"} margin="0 auto">
-      <Typography>Xin chào: {authContext.userInfo.email}</Typography>
+      <Typography>Xin chào: {authContext.userInfo ? authContext.userInfo.email : ""}</Typography>
       <Button onClick={handleLogout}>Sign out</Button>
       <Typography component="h1" fontSize="3rem" marginBottom="20px">Hệ thống quản lý tài nguyên Yurei</Typography>
       <Box sx={{ width: '100%' }}>
