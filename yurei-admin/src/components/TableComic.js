@@ -1,4 +1,4 @@
-import { Box, Collapse, Grid, IconButton, Input, InputAdornment, Typography } from "@mui/material";
+import { Box, Collapse, IconButton, Input, InputAdornment, Typography } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -8,18 +8,17 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import React, { useState } from "react";
 import { FaChevronDown, FaChevronUp, FaSearch } from "react-icons/fa";
-import { getContentFromHTML, getImageURLFromContent } from "../utils";
-import Chart from "./Chart";
+import { getContentComicFromHTML, getImageURLFromContent } from "../utils";
 // import PieChart from "./PieChart";
 
-const TableAnime = (props) => {
+const TableComic = (props) => {
   const { data } = props;
   const [open, setOpen] = useState(false);
   const [posts, setPosts] = useState(data);
 
   const handleChangeValue = (e) => {
-    let filter = data.filter(item => item.title.toLowerCase().includes(e.target.value.toLowerCase()));
-    setPosts(filter);
+    let filter = data.items.filter(item => item.title.toLowerCase().includes(e.target.value.toLowerCase()));
+    setPosts({...posts, items: filter});
   }
  
   return (
@@ -54,22 +53,27 @@ const TableAnime = (props) => {
                   backgroundColor: "#29b0ff",
                 }}
               >
-                Tên phim
+                Tên truyện
               </TableCell>
               <TableCell
                 sx={{ fontWeight: "bold", backgroundColor: "#29b0ff" }}
               >
-                Số tập
+                Số chap
               </TableCell>
               <TableCell
                 sx={{ fontWeight: "bold", backgroundColor: "#29b0ff" }}
               >
-                Thể loại
+                Năm phát hành
               </TableCell>
               <TableCell
                 sx={{ fontWeight: "bold", backgroundColor: "#29b0ff" }}
               >
-                Tình trạng
+                Tác giả
+              </TableCell>
+              <TableCell
+                sx={{ fontWeight: "bold", backgroundColor: "#29b0ff" }}
+              >
+                Họa sĩ
               </TableCell>
               <TableCell
                 sx={{
@@ -83,7 +87,7 @@ const TableAnime = (props) => {
           </TableHead>
           <TableBody>
             {posts ? (
-              posts.map((row, index) => (
+              posts.items.map((row, index) => (
                 <>
                   <TableRow
                     key={row}
@@ -109,18 +113,15 @@ const TableAnime = (props) => {
                     </TableCell>
                     <TableCell>{row.title}</TableCell>
                     <TableCell>
-                      {getContentFromHTML(row.content).fullEpisodes}
+                        {getContentComicFromHTML(row.content).fullChapters}
                     </TableCell>
                     <TableCell>
-                      {getContentFromHTML(row.content).fullCategories.map(
-                        (cat) => (
-                          <Typography component="p" marginLeft={"10px"}>
-                            {cat}
-                          </Typography>
-                        )
-                      )}
+                        {getContentComicFromHTML(row.content).fullReleaseYear}
                     </TableCell>
-                    <TableCell>Đang cập nhật...</TableCell>
+                    <TableCell>
+  
+                    </TableCell>
+                    <TableCell></TableCell>
                     <TableCell>{row.url}</TableCell>
                   </TableRow>
                   <TableRow>
@@ -165,26 +166,10 @@ const TableAnime = (props) => {
                         </Table> */}
                         </Box>
                         <Box sx={{ margin: 1, fontWeight: "bold" }}>
-                          Nhân sự:{" "}
-                        </Box>
-                        <Box sx={{ margin: 1 }}>
-                          {getContentFromHTML(row.content).fullStaffs.map(
-                            (staff) => (
-                              <Typography
-                                component="p"
-                                marginLeft={"10px"}
-                                fontSize="0.875rem"
-                              >
-                                {staff}
-                              </Typography>
-                            )
-                          )}
-                        </Box>
-                        <Box sx={{ margin: 1, fontWeight: "bold" }}>
                           Nội dung:{" "}
                         </Box>
                         <Box sx={{ margin: 1 }}>
-                          {getContentFromHTML(row.content).fullSummary}
+                            {getContentComicFromHTML(row.content).fullSummary}
                         </Box>
                       </Collapse>
                     </TableCell>
@@ -197,16 +182,8 @@ const TableAnime = (props) => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Grid container>
-        <Grid item xs={6}>
-          <Chart chartTitle="Thống kê 1"/>
-        </Grid>
-        <Grid item xs={6} heigt="200px">
-          <Chart />
-        </Grid>
-      </Grid>
     </>
   );
 };
 
-export default TableAnime;
+export default TableComic;

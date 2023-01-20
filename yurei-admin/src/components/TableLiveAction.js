@@ -1,4 +1,4 @@
-import { Box, Collapse, Grid, IconButton, Input, InputAdornment, Typography } from "@mui/material";
+import { Box, Collapse, IconButton, Input, InputAdornment, Typography } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -9,10 +9,9 @@ import TableRow from "@mui/material/TableRow";
 import React, { useState } from "react";
 import { FaChevronDown, FaChevronUp, FaSearch } from "react-icons/fa";
 import { getContentFromHTML, getImageURLFromContent } from "../utils";
-import Chart from "./Chart";
 // import PieChart from "./PieChart";
 
-const TableAnime = (props) => {
+const TableLiveAction = (props) => {
   const { data } = props;
   const [open, setOpen] = useState(false);
   const [posts, setPosts] = useState(data);
@@ -197,16 +196,8 @@ const TableAnime = (props) => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Grid container>
-        <Grid item xs={6}>
-          <Chart chartTitle="Thống kê 1"/>
-        </Grid>
-        <Grid item xs={6} heigt="200px">
-          <Chart />
-        </Grid>
-      </Grid>
     </>
   );
 };
 
-export default TableAnime;
+export default TableLiveAction;
