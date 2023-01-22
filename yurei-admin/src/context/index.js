@@ -2,7 +2,11 @@ import { createContext } from "react";
 
 const AuthContext = createContext({
     userInfo: {},
-    setUserInfo: () => {}
+    totalCountCategories: {},
+    animes: {},
+    liveActions: {},
+    comics: {},
+    members: {}
 });
 
 export default AuthContext;

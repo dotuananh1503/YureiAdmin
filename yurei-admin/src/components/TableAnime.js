@@ -201,7 +201,7 @@ const TableAnime = (props) => {
         <Grid item xs={6}>
           <Chart chartTitle="Thống kê 1"/>
         </Grid>
-        <Grid item xs={6} heigt="200px">
+        <Grid item xs={6}>
           <Chart />
         </Grid>
       </Grid>

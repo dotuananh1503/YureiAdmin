@@ -5,7 +5,8 @@ const Global = {
     ANIME_BLOG_ID: "7311086410835747408",
     COMIC_BLOG_ID: "5955868275670099945",
     API_KEY: "AIzaSyCCSz9pRZ_4Xr6Mp0_UGIvmgNh1xitoJaM",
-    MAX_RESULTS: 500 
+    MAX_RESULTS: 500,
+    RANGE: "all" 
 }
 
 export const getAnimePosts = async () => {
@@ -37,6 +38,20 @@ export const getComicPosts = async () => {
     } catch (error) {
       return error;
     }
+}
+
+export const getPageViews = async () => {
+  try {
+    const response = await API.get(`${Global.COMIC_BLOG_ID}/pageviews`, {
+      params: {
+          key: Global.API_KEY,
+          range: Global.RANGE
+      }
+    });
+    return response
+  } catch (error) {
+    return error;
+  }
 }
 
 export const getMemberList = async (sheetID = 1) => {

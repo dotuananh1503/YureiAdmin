@@ -1,11 +1,10 @@
 import { Button, Tab, Tabs, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import { signOut } from "firebase/auth";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import { getAnimePosts, getComicPosts, getMemberList } from "../apis";
 import TableAnime from "../components/TableAnime";
 import TableComic from "../components/TableComic";
 import TableLiveAction from "../components/TableLiveAction";
@@ -17,21 +16,7 @@ import { auth } from '../utils/firebase';
 function Home() {
   const navigate = useNavigate();
   const authContext = useContext(AuthContext);
-  const [postsLiveAction, setPostsLiveAction] = useState();
-  const [postsAnime, setPostsAnime] = useState();
-  const [postsComic, setPostsComic] = useState();
-  const [memberList, setMemberList] = useState();
   const [value, setValue] = useState(0);
-
-  useEffect(() => {
-    getAnimePosts().then((response) => {
-      setPostsLiveAction(response.liveActions);
-      setPostsAnime(response.animes);
-    });
-    getComicPosts().then((response) => setPostsComic(response));
-    getMemberList().then((response) => setMemberList(response));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const a11yProps = (index) => {
     return {
@@ -69,16 +54,16 @@ function Home() {
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
-          <TableAnime data={postsAnime}/>
+          <TableAnime data={authContext.animes}/>
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <TableLiveAction data={postsLiveAction}/>
+          <TableLiveAction data={authContext.liveActions}/>
         </TabPanel>
         <TabPanel value={value} index={2}>
-          <TableComic data={postsComic}/>
+          <TableComic data={authContext.comics}/>
         </TabPanel>
         <TabPanel value={value} index={3}>
-          <TableMember data={memberList}/>
+          <TableMember data={authContext.members}/>
         </TabPanel>
       </Box>
       <ToastContainer />

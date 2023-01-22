@@ -49,3 +49,21 @@ export const getContentComicFromHTML = (html) => {
   let final = { fullSummary, fullChapters, fullReleaseYear };
   return final;
 };
+
+export const getAllCategories = (animes) => {
+  let allCategories = []
+  let result = new Set()
+  let totalCount = {}
+  animes.forEach(item => {
+    let temp = getContentFromHTML(item.content).fullCategories
+    allCategories.push(temp);
+    allCategories.forEach(cat => {
+      cat.forEach(c => result.add(c))
+    })
+  })
+  result.forEach(c => {
+    let total = animes.filter(a => a.content.includes(c))
+    totalCount[c] = total.length
+  })
+  return totalCount; 
+}

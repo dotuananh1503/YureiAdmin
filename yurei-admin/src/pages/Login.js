@@ -1,14 +1,12 @@
-import React, { useContext, useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../utils/firebase";
-import { useNavigate } from "react-router-dom";
-import { notification } from "../utils/notification";
-import AuthContext from "../context";
 import { Box, Button, Grid, Input } from "@mui/material";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { auth } from "../utils/firebase";
+import { notification } from "../utils/notification";
 
 const Login = () => {
   const navigate = useNavigate();
-  const authContext = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -20,7 +18,6 @@ const Login = () => {
         const user = userCredential.user;
         localStorage.setItem("access_token", user.accessToken);
         notification("success", "Đăng nhập thành công");
-        authContext.setUserInfo(user);
         navigate("/home");
         //console.log(user);
       })
