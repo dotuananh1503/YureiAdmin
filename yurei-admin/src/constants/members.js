@@ -1,0 +1,19 @@
+export const members = [
+    "Tezu",
+    "Katori",
+    "Mixus",
+    "Skye",
+    "Aoi",
+    "Aki",
+    "Ai-chan",
+    "Hyoko",
+    "Yuudachi",
+    "Ninniku",
+    "Amane",
+    "quocthinh99",
+    "Nothing",
+    "Beams",
+    "Shiromantic",
+    "Lamb",
+    "Hydro"
+]

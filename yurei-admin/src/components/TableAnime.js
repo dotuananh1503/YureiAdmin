@@ -6,8 +6,9 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { FaChevronDown, FaChevronUp, FaSearch } from "react-icons/fa";
+import AuthContext from "../context";
 import { getContentFromHTML, getImageURLFromContent } from "../utils";
 import Chart from "./Chart";
 // import PieChart from "./PieChart";
@@ -16,6 +17,7 @@ const TableAnime = (props) => {
   const { data } = props;
   const [open, setOpen] = useState(false);
   const [posts, setPosts] = useState(data);
+  const authContext = useContext(AuthContext)
 
   const handleChangeValue = (e) => {
     let filter = data.filter(item => item.title.toLowerCase().includes(e.target.value.toLowerCase()));
@@ -199,10 +201,10 @@ const TableAnime = (props) => {
       </TableContainer>
       <Grid container>
         <Grid item xs={6}>
-          <Chart chartTitle="Thống kê 1"/>
+          <Chart chartTitle="Thống kê Anime theo thể loại" dataToShow={authContext.totalCountCategories}/>
         </Grid>
         <Grid item xs={6}>
-          <Chart />
+          <Chart chartTitle="Thống kê Số bộ anime mỗi thành viên tham gia" dataToShow={authContext.countAnimeByMember} />
         </Grid>
       </Grid>
     </>

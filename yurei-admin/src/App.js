@@ -7,13 +7,14 @@ import { ProtectedRoute } from "./components/ProtectedRoute";
 import AuthContext from "./context";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import { getAllCategories } from "./utils";
+import { countAnimeByMember, getAllCategories } from "./utils";
 import { auth } from "./utils/firebase";
 
 
 function App() {
   const [user, setUser] = useState({});
   const [categories, setCategories] = useState({});
+  const [countAnimeByMem, setCountAnimeByMem] = useState({});
   const [postsLiveAction, setPostsLiveAction] = useState();
   const [postsAnime, setPostsAnime] = useState();
   const [postsComic, setPostsComic] = useState();
@@ -25,6 +26,7 @@ function App() {
       setPostsLiveAction(response.liveActions);
       setPostsAnime(response.animes);
       setCategories(getAllCategories(response.animes))
+      setCountAnimeByMem(countAnimeByMember(response.animes))
     });
     getComicPosts().then((response) => setPostsComic(response));
     getMemberList().then((response) => setMemberList(response));
@@ -36,6 +38,7 @@ function App() {
       value={{
         userInfo: user,
         totalCountCategories: categories,
+        countAnimeByMember: countAnimeByMem,
         animes: postsAnime,
         liveActions: postsLiveAction,
         comics: postsComic,

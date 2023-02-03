@@ -1,3 +1,5 @@
+import { members } from "../constants/members";
+
 export const getImageURLFromContent = (html) => {
   let template = document.createElement("template");
   template.innerHTML = html;
@@ -65,5 +67,24 @@ export const getAllCategories = (animes) => {
     let total = animes.filter(a => a.content.includes(c))
     totalCount[c] = total.length
   })
+  return totalCount; 
+}
+
+export const countAnimeByMember = (animes) => {
+  // let allStaffs = []
+  // let result = new Set()
+  let totalCount = {}
+  // animes.forEach(item => {
+  //   let temp = getContentFromHTML(item.content).fullStaffs
+  //   allStaffs.push(temp);
+  //   allStaffs.forEach(cat => {
+  //     cat.forEach(c => result.add(c))
+  //   })
+  // })
+  members.forEach(m => {
+    let total = animes.filter(a => a.content.includes(m))
+    totalCount[m] = total.length
+  })
+  console.log(totalCount)
   return totalCount; 
 }
