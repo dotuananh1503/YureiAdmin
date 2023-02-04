@@ -6,18 +6,19 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { FaChevronDown, FaChevronUp, FaSearch } from "react-icons/fa";
+import AuthContext from "../context";
 import { getContentFromHTML, getImageURLFromContent } from "../utils";
 // import PieChart from "./PieChart";
 
-const TableLiveAction = (props) => {
-  const { data } = props;
+const TableLiveAction = () => {
+  const authContext = useContext(AuthContext)
   const [open, setOpen] = useState(false);
-  const [posts, setPosts] = useState(data);
+  const [posts, setPosts] = useState(authContext.liveActions);
 
   const handleChangeValue = (e) => {
-    let filter = data.filter(item => item.title.toLowerCase().includes(e.target.value.toLowerCase()));
+    let filter = authContext.liveActions.filter(item => item.title.toLowerCase().includes(e.target.value.toLowerCase()));
     setPosts(filter);
   }
  
@@ -36,7 +37,7 @@ const TableLiveAction = (props) => {
         />
       </Box>
       <TableContainer component={Paper} sx={{ mt: "10px", height: 600 }}>
-        <Table sx={{ minWidth: 650}} aria-label="simple table">
+        <Table sx={{ minWidth: 650}} stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
               <TableCell
@@ -90,6 +91,7 @@ const TableLiveAction = (props) => {
                   >
                     <TableCell>
                       <IconButton
+                        key={index}
                         aria-label="expand row"
                         size="small"
                         onClick={() => setOpen(!open)}
@@ -113,7 +115,7 @@ const TableLiveAction = (props) => {
                     <TableCell>
                       {getContentFromHTML(row.content).fullCategories.map(
                         (cat) => (
-                          <Typography component="p" marginLeft={"10px"}>
+                          <Typography key={cat} component="p" marginLeft={"10px"}>
                             {cat}
                           </Typography>
                         )

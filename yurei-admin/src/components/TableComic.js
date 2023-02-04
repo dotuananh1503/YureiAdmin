@@ -6,18 +6,19 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { FaChevronDown, FaChevronUp, FaSearch } from "react-icons/fa";
+import AuthContext from "../context";
 import { getContentComicFromHTML, getImageURLFromContent } from "../utils";
 // import PieChart from "./PieChart";
 
-const TableComic = (props) => {
-  const { data } = props;
+const TableComic = () => {
+  const authContext = useContext(AuthContext)
   const [open, setOpen] = useState(false);
-  const [posts, setPosts] = useState(data);
+  const [posts, setPosts] = useState(authContext.comics);
 
   const handleChangeValue = (e) => {
-    let filter = data.items.filter(item => item.title.toLowerCase().includes(e.target.value.toLowerCase()));
+    let filter = authContext.comics.items.filter(item => item.title.toLowerCase().includes(e.target.value.toLowerCase()));
     setPosts({...posts, items: filter});
   }
  
@@ -36,7 +37,7 @@ const TableComic = (props) => {
         />
       </Box>
       <TableContainer component={Paper} sx={{ mt: "10px", height: 600 }}>
-        <Table sx={{ minWidth: 650}} aria-label="simple table">
+        <Table sx={{ minWidth: 650}} stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
               <TableCell

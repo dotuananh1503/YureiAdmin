@@ -13,7 +13,7 @@ const TableMember = (props) => {
 
   return (
     <TableContainer component={Paper} sx={{mt: '10px'}}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <Table sx={{ minWidth: 650 }} stickyHeader aria-label="sticky table">
         <TableHead>
           <TableRow>
             <TableCell sx={{fontWeight: 'bold', backgroundColor: '#29b0ff'}}>STT</TableCell>

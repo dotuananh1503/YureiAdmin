@@ -1,7 +1,6 @@
 import { toast } from "react-toastify";
 
 export const notification = (type, message) => {
-  console.log(message);
   return toast[type](message, {
     position: "top-right",
     autoClose: 1000,

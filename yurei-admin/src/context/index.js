@@ -4,10 +4,10 @@ const AuthContext = createContext({
     userInfo: {},
     totalCountCategories: {},
     countAnimeByMember: {},
-    animes: {},
-    liveActions: {},
-    comics: {},
-    members: {}
+    animes: [],
+    liveActions: [],
+    comics: [],
+    members: []
 });
 
 export default AuthContext;

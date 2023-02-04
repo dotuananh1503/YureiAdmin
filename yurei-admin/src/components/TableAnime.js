@@ -11,16 +11,16 @@ import { FaChevronDown, FaChevronUp, FaSearch } from "react-icons/fa";
 import AuthContext from "../context";
 import { getContentFromHTML, getImageURLFromContent } from "../utils";
 import Chart from "./Chart";
+import Loading from "./Loading";
 // import PieChart from "./PieChart";
 
-const TableAnime = (props) => {
-  const { data } = props;
-  const [open, setOpen] = useState(false);
-  const [posts, setPosts] = useState(data);
+const TableAnime = () => {
   const authContext = useContext(AuthContext)
+  const [open, setOpen] = useState(false);
+  const [posts, setPosts] = useState(authContext.animes);
 
   const handleChangeValue = (e) => {
-    let filter = data.filter(item => item.title.toLowerCase().includes(e.target.value.toLowerCase()));
+    let filter = authContext.animes.filter(item => item.title.toLowerCase().includes(e.target.value.toLowerCase()));
     setPosts(filter);
   }
  
@@ -39,7 +39,7 @@ const TableAnime = (props) => {
         />
       </Box>
       <TableContainer component={Paper} sx={{ mt: "10px", height: 600 }}>
-        <Table sx={{ minWidth: 650}} aria-label="simple table">
+        <Table sx={{ minWidth: 650, color: '#fff'}} stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
               <TableCell
@@ -84,7 +84,7 @@ const TableAnime = (props) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {posts ? (
+            {posts.length >0 ? (
               posts.map((row, index) => (
                 <>
                   <TableRow
@@ -93,6 +93,7 @@ const TableAnime = (props) => {
                   >
                     <TableCell>
                       <IconButton
+                        key={index}
                         aria-label="expand row"
                         size="small"
                         onClick={() => setOpen(!open)}
@@ -116,7 +117,7 @@ const TableAnime = (props) => {
                     <TableCell>
                       {getContentFromHTML(row.content).fullCategories.map(
                         (cat) => (
-                          <Typography component="p" marginLeft={"10px"}>
+                          <Typography key={cat} component="p" marginLeft={"10px"}>
                             {cat}
                           </Typography>
                         )
@@ -173,6 +174,7 @@ const TableAnime = (props) => {
                           {getContentFromHTML(row.content).fullStaffs.map(
                             (staff) => (
                               <Typography
+                                key={staff}
                                 component="p"
                                 marginLeft={"10px"}
                                 fontSize="0.875rem"
@@ -194,7 +196,9 @@ const TableAnime = (props) => {
                 </>
               ))
             ) : (
-              <>Loading...</>
+              <Box sx={{display: 'flex', justifyContent: "center", alignItems: 'center', width: '100%'}}>
+                <Loading />
+              </Box>
             )}
           </TableBody>
         </Table>
