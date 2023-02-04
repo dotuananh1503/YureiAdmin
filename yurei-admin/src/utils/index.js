@@ -23,12 +23,26 @@ export const getContentFromHTML = (html) => {
   let fullStaffs = [...template.content.querySelectorAll("li")].map(
     (item) => item.innerText
   );
+  let isComplete = template.content.querySelectorAll(".anime-episodes-complete")
+  let isDropped = template.content.querySelectorAll(".anime-episodes-drop")
+  let isOngoing = template.content.querySelectorAll(".anime-episodes")
+  let fullStatus;
+  if(isComplete.length > 0){
+    fullStatus = [...template.content.querySelectorAll(".anime-episodes-complete")].map(item => item.innerText)
+  }
+  else if(isDropped.length>0){
+    fullStatus = [...template.content.querySelectorAll(".anime-episodes-drop")].map(item => item.innerText)
+  }
+  else if(isOngoing.length>0){
+    fullStatus = [...template.content.querySelectorAll(".anime-episodes")].map(item => item.innerText)
+  }
   let final = {
     fullName,
     fullSummary,
     fullEpisodes,
     fullCategories,
     fullStaffs,
+    fullStatus
   };
   return final;
 };
@@ -44,13 +58,33 @@ export const getContentComicFromHTML = (html) => {
   let fullReleaseYear = [
     ...template.content.querySelectorAll(".y6x11p"),
   ][1].innerText.split(" ")[3];
-//   let fullAuthors = [...template.content.querySelectorAll(".y6x11p")].filter(
-//     (item) => item.innerText.includes("Tác giả")
-//   );
-//   console.log(fullAuthors);
-  let final = { fullSummary, fullChapters, fullReleaseYear };
+  let fullAuthors;
+  let temp = [...template.content.querySelectorAll(".y6x11p")].map(
+    (item) => item.innerText
+  ).slice(2);
+  if(temp.length === 3){
+    fullAuthors = temp.slice(0,2)
+    fullAuthors[0] = fullAuthors[0].replace("Tác giả 1", "").trim()
+    fullAuthors[1] = fullAuthors[1].replace("Tác giả 2", "").trim()
+  } else if(temp.length === 2){
+    fullAuthors = temp.slice(0,1)
+    fullAuthors[0] = fullAuthors[0].replace("Tác giả", "").trim()
+  }
+  let fullArtists = temp[temp.length - 1];
+  fullArtists = fullArtists.replace("Họa sĩ", "").trim()
+  let final = { fullSummary, fullChapters, fullReleaseYear, fullArtists, fullAuthors };
   return final;
 };
+
+export const getLabelComic = (labels) => {
+  let fullScores = labels[0]
+  let fullTags = labels.slice(1)
+
+  return {
+    fullScores,
+    fullTags
+  }
+}
 
 export const getAllCategories = (animes) => {
   let allCategories = []

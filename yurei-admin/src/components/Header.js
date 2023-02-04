@@ -34,7 +34,7 @@ export const Header = () => {
       <Typography sx={{ color: "#fff", fontWeight: "bold", fontSize: '1.5rem' }}>
         Xin chào: {authContext.userInfo && authContext.userInfo.email}
       </Typography>
-      <Button variant="text" sx={{color: '#fff', fontSize: '1.5rem'}} onClick={handleLogout}>Sign out</Button>
+      <Button variant="text" sx={{color: '#fff', fontSize: '1.5rem'}} onClick={handleLogout}>Đăng xuất</Button>
     </Box>
   );
 };

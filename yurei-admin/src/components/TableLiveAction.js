@@ -1,4 +1,12 @@
-import { Box, Collapse, IconButton, Input, InputAdornment, Typography } from "@mui/material";
+import {
+  Box,
+  Chip,
+  Collapse,
+  IconButton,
+  Input,
+  InputAdornment,
+  Typography,
+} from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -13,15 +21,17 @@ import { getContentFromHTML, getImageURLFromContent } from "../utils";
 // import PieChart from "./PieChart";
 
 const TableLiveAction = () => {
-  const authContext = useContext(AuthContext)
+  const authContext = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   const [posts, setPosts] = useState(authContext.liveActions);
 
   const handleChangeValue = (e) => {
-    let filter = authContext.liveActions.filter(item => item.title.toLowerCase().includes(e.target.value.toLowerCase()));
+    let filter = authContext.liveActions.filter((item) =>
+      item.title.toLowerCase().includes(e.target.value.toLowerCase())
+    );
     setPosts(filter);
-  }
- 
+  };
+
   return (
     <>
       <Box sx={{ width: "100%", m: "30px 0" }}>
@@ -36,8 +46,8 @@ const TableLiveAction = () => {
           }
         />
       </Box>
-      <TableContainer component={Paper} sx={{ mt: "10px", height: 600 }}>
-        <Table sx={{ minWidth: 650}} stickyHeader aria-label="sticky table">
+      <TableContainer component={Paper} sx={{ mt: "10px"}}>
+        <Table sx={{ minWidth: 650 }} stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
               <TableCell
@@ -108,20 +118,51 @@ const TableLiveAction = () => {
                         width={"150px"}
                       ></Typography>
                     </TableCell>
-                    <TableCell>{row.title}</TableCell>
+                    <TableCell
+                      sx={{
+                        color: "#bf15bc",
+                        fontWeight: "bold",
+                        fontSize: "1rem",
+                      }}
+                    >
+                      {row.title}
+                    </TableCell>
                     <TableCell>
                       {getContentFromHTML(row.content).fullEpisodes}
                     </TableCell>
                     <TableCell>
                       {getContentFromHTML(row.content).fullCategories.map(
                         (cat) => (
-                          <Typography key={cat} component="p" marginLeft={"10px"}>
-                            {cat}
+                          <Typography
+                            key={cat}
+                            component="div"
+                            marginLeft={"10px"}
+                          >
+                            <Chip
+                              color="primary"
+                              sx={{ backgroundColor: "#F44611", my: "3px" }}
+                              label={cat}
+                            />
                           </Typography>
                         )
                       )}
                     </TableCell>
-                    <TableCell>Đang cập nhật...</TableCell>
+                    <TableCell>
+                      <Chip
+                        color="primary"
+                        sx={{
+                          backgroundColor:
+                            getContentFromHTML(row.content).fullStatus[0] ===
+                            "Hoàn thành"
+                              ? "#2a8f1d"
+                              : getContentFromHTML(row.content)
+                                  .fullStatus[0] === "Chưa hoàn thành"
+                              ? "#bf1520"
+                              : "#1534bf",
+                        }}
+                        label={getContentFromHTML(row.content).fullStatus[0]}
+                      />
+                    </TableCell>
                     <TableCell>{row.url}</TableCell>
                   </TableRow>
                   <TableRow>
@@ -172,6 +213,7 @@ const TableLiveAction = () => {
                           {getContentFromHTML(row.content).fullStaffs.map(
                             (staff) => (
                               <Typography
+                                key={staff}
                                 component="p"
                                 marginLeft={"10px"}
                                 fontSize="0.875rem"

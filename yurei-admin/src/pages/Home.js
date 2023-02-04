@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import { useContext, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Footer from "../components/Footer";
 import Header from "../components/Header";
 import TableAnime from "../components/TableAnime";
 import TableComic from "../components/TableComic";
@@ -29,12 +30,13 @@ function Home() {
   return (
     <>
       <Header />
-      <Box width={"80%"} margin="0 auto">
+      <Box width={"90%"} margin="0 auto">
         <Typography
           component="h1"
           fontSize="3rem"
           marginBottom="20px"
           textAlign="center"
+          textTransform="uppercase"
         >
           Hệ thống quản lý tài nguyên Yurei
         </Typography>
@@ -68,6 +70,7 @@ function Home() {
         </Box>
         <ToastContainer />
       </Box>
+      <Footer />
     </>
   );
 }

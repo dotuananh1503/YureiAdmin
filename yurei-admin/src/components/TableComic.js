@@ -1,4 +1,12 @@
-import { Box, Collapse, IconButton, Input, InputAdornment, Typography } from "@mui/material";
+import {
+  Box,
+  Chip,
+  Collapse,
+  IconButton,
+  Input,
+  InputAdornment,
+  Typography,
+} from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -9,19 +17,25 @@ import TableRow from "@mui/material/TableRow";
 import React, { useContext, useState } from "react";
 import { FaChevronDown, FaChevronUp, FaSearch } from "react-icons/fa";
 import AuthContext from "../context";
-import { getContentComicFromHTML, getImageURLFromContent } from "../utils";
+import {
+  getContentComicFromHTML,
+  getImageURLFromContent,
+  getLabelComic,
+} from "../utils";
 // import PieChart from "./PieChart";
 
 const TableComic = () => {
-  const authContext = useContext(AuthContext)
+  const authContext = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   const [posts, setPosts] = useState(authContext.comics);
 
   const handleChangeValue = (e) => {
-    let filter = authContext.comics.items.filter(item => item.title.toLowerCase().includes(e.target.value.toLowerCase()));
-    setPosts({...posts, items: filter});
-  }
- 
+    let filter = authContext.comics.items.filter((item) =>
+      item.title.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+    setPosts({ ...posts, items: filter });
+  };
+
   return (
     <>
       <Box sx={{ width: "100%", m: "30px 0" }}>
@@ -37,7 +51,7 @@ const TableComic = () => {
         />
       </Box>
       <TableContainer component={Paper} sx={{ mt: "10px", height: 600 }}>
-        <Table sx={{ minWidth: 650}} stickyHeader aria-label="sticky table">
+        <Table sx={{ minWidth: 650 }} stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
               <TableCell
@@ -96,6 +110,7 @@ const TableComic = () => {
                   >
                     <TableCell>
                       <IconButton
+                        key={index}
                         aria-label="expand row"
                         size="small"
                         onClick={() => setOpen(!open)}
@@ -112,17 +127,35 @@ const TableComic = () => {
                         width={"150px"}
                       ></Typography>
                     </TableCell>
-                    <TableCell>{row.title}</TableCell>
-                    <TableCell>
-                        {getContentComicFromHTML(row.content).fullChapters}
+                    <TableCell
+                      sx={{
+                        color: "#bf15bc",
+                        fontWeight: "bold",
+                        fontSize: "1rem",
+                      }}
+                    >
+                      {row.title}
                     </TableCell>
                     <TableCell>
-                        {getContentComicFromHTML(row.content).fullReleaseYear}
+                      {getContentComicFromHTML(row.content).fullChapters}
                     </TableCell>
                     <TableCell>
-  
+                      {getContentComicFromHTML(row.content).fullReleaseYear}
                     </TableCell>
-                    <TableCell></TableCell>
+                    <TableCell>
+                      {getContentComicFromHTML(row.content).fullAuthors.map(
+                        (author) => (
+                          <Box key={author}>
+                            <Chip sx={{ mt: "3px" }} label={author} />
+                          </Box>
+                        )
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <Chip
+                        label={getContentComicFromHTML(row.content).fullArtists}
+                      />
+                    </TableCell>
                     <TableCell>{row.url}</TableCell>
                   </TableRow>
                   <TableRow>
@@ -131,46 +164,31 @@ const TableComic = () => {
                       colSpan={9}
                     >
                       <Collapse in={open} timeout="auto" unmountOnExit>
+                        <Box sx={{ margin: 1, fontWeight: "bold" }}>Điểm:</Box>
                         <Box sx={{ margin: 1 }}>
-                          {/* <Typography variant="h6" gutterBottom component="div">
-                          Thông tin thêm
-                        </Typography>
-                        <Table size="small" aria-label="purchases">
-                          <TableHead>
-                            <TableRow>
-                              <TableCell>Nhân sự</TableCell>
-                              <TableCell>Customer</TableCell>
-                              <TableCell align="right">Amount</TableCell>
-                              <TableCell align="right">
-                                Total price ($)
-                              </TableCell>
-                            </TableRow>
-                          </TableHead>
-                          <TableBody>
-                            {row.history.map((historyRow) => (
-                              <TableRow key={historyRow.date}>
-                                <TableCell component="th" scope="row">
-                                  {historyRow.date}
-                                </TableCell>
-                                <TableCell>{historyRow.customerId}</TableCell>
-                                <TableCell align="right">
-                                  {historyRow.amount}
-                                </TableCell>
-                                <TableCell align="right">
-                                  {Math.round(
-                                    historyRow.amount * row.price * 100
-                                  ) / 100}
-                                </TableCell>
-                              </TableRow>
-                            ))}
-                          </TableBody>
-                        </Table> */}
+                          {getLabelComic(row.labels).fullScores}
+                        </Box>
+                        <Box sx={{ margin: 1, fontWeight: "bold" }}>Tags: </Box>
+                        <Box sx={{ margin: 1 }}>
+                          {getLabelComic(row.labels).fullTags.map((tag) => (
+                            <Typography
+                              key={tag}
+                              component="span"
+                              marginLeft={"5px"}
+                            >
+                              <Chip
+                                color="primary"
+                                sx={{ backgroundColor: "#F44611", my: "3px" }}
+                                label={tag}
+                              />
+                            </Typography>
+                          ))}
                         </Box>
                         <Box sx={{ margin: 1, fontWeight: "bold" }}>
                           Nội dung:{" "}
                         </Box>
                         <Box sx={{ margin: 1 }}>
-                            {getContentComicFromHTML(row.content).fullSummary}
+                          {getContentComicFromHTML(row.content).fullSummary}
                         </Box>
                       </Collapse>
                     </TableCell>

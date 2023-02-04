@@ -30,6 +30,7 @@ const Chart = (props) => {
     plugins: {
       legend: {
         position: "top",
+        display: false,
       },
       title: {
         display: true,

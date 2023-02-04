@@ -1,4 +1,13 @@
-import { Box, Collapse, Grid, IconButton, Input, InputAdornment, Typography } from "@mui/material";
+import {
+  Box,
+  Chip,
+  Collapse,
+  Grid,
+  IconButton,
+  Input,
+  InputAdornment,
+  Typography,
+} from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -6,7 +15,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FaChevronDown, FaChevronUp, FaSearch } from "react-icons/fa";
 import AuthContext from "../context";
 import { getContentFromHTML, getImageURLFromContent } from "../utils";
@@ -15,15 +24,23 @@ import Loading from "./Loading";
 // import PieChart from "./PieChart";
 
 const TableAnime = () => {
-  const authContext = useContext(AuthContext)
+  const authContext = useContext(AuthContext);
   const [open, setOpen] = useState(false);
-  const [posts, setPosts] = useState(authContext.animes);
+  const [posts, setPosts] = useState([]);
 
   const handleChangeValue = (e) => {
-    let filter = authContext.animes.filter(item => item.title.toLowerCase().includes(e.target.value.toLowerCase()));
+    let filter = authContext.animes.filter((item) =>
+      item.title.toLowerCase().includes(e.target.value.toLowerCase())
+    );
     setPosts(filter);
-  }
- 
+  };
+
+  useEffect(() => {
+    if (authContext.animes.length > 0) {
+      setPosts(authContext.animes);
+    }
+  }, [authContext]);
+
   return (
     <>
       <Box sx={{ width: "100%", m: "30px 0" }}>
@@ -38,8 +55,12 @@ const TableAnime = () => {
           }
         />
       </Box>
-      <TableContainer component={Paper} sx={{ mt: "10px", height: 600 }}>
-        <Table sx={{ minWidth: 650, color: '#fff'}} stickyHeader aria-label="sticky table">
+      <TableContainer
+        component={Paper}
+        key={Math.random()}
+        sx={{ mt: "10px", height: posts.length > 0 ? 600 : 200 }}
+      >
+        <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
               <TableCell
@@ -83,22 +104,22 @@ const TableAnime = () => {
               </TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
-            {posts.length >0 ? (
+          <TableBody sx={{ position: "relative" }}>
+            {posts.length > 0 ? (
               posts.map((row, index) => (
                 <>
                   <TableRow
-                    key={row}
+                    key={index}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
-                    <TableCell>
+                    <TableCell key={index}>
                       <IconButton
                         key={index}
                         aria-label="expand row"
                         size="small"
                         onClick={() => setOpen(!open)}
                       >
-                        {open ? <FaChevronUp /> : <FaChevronDown />}
+                        {open ? <FaChevronUp key={index}/> : <FaChevronDown key={index}/>}
                       </IconButton>
                     </TableCell>
                     <TableCell component="th" scope="row">
@@ -110,72 +131,58 @@ const TableAnime = () => {
                         width={"150px"}
                       ></Typography>
                     </TableCell>
-                    <TableCell>{row.title}</TableCell>
+                    <TableCell sx={{color: '#bf15bc', fontWeight: 'bold', fontSize: '1rem'}}>{row.title}</TableCell>
                     <TableCell>
                       {getContentFromHTML(row.content).fullEpisodes}
                     </TableCell>
                     <TableCell>
                       {getContentFromHTML(row.content).fullCategories.map(
-                        (cat) => (
-                          <Typography key={cat} component="p" marginLeft={"10px"}>
-                            {cat}
+                        (cat, index) => (
+                          <Typography
+                            key={index}
+                            component="span"
+                            display="block"
+                            marginLeft={"10px"}
+                          >
+                            <Chip key={index} color="primary" sx={{backgroundColor: '#F44611', my: '3px'}} label={cat} />
                           </Typography>
                         )
                       )}
                     </TableCell>
-                    <TableCell>Đang cập nhật...</TableCell>
+                    <TableCell>
+                      <Chip
+                        color="primary"
+                        sx={{
+                          backgroundColor:
+                            getContentFromHTML(row.content).fullStatus[0] ===
+                            "Hoàn thành"
+                              ? "#2a8f1d"
+                              : getContentFromHTML(row.content)
+                                  .fullStatus[0] === "Chưa hoàn thành"
+                              ? "#bf1520"
+                              : "#1534bf",
+                        }}
+                        label={getContentFromHTML(row.content).fullStatus[0]}
+                      />
+                    </TableCell>
                     <TableCell>{row.url}</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell
-                      style={{ paddingBottom: 0, paddingTop: 0 }}
+                      sx={{ pb: 0, pt: 0 }}
                       colSpan={9}
                     >
                       <Collapse in={open} timeout="auto" unmountOnExit>
-                        <Box sx={{ margin: 1 }}>
-                          {/* <Typography variant="h6" gutterBottom component="div">
-                          Thông tin thêm
-                        </Typography>
-                        <Table size="small" aria-label="purchases">
-                          <TableHead>
-                            <TableRow>
-                              <TableCell>Nhân sự</TableCell>
-                              <TableCell>Customer</TableCell>
-                              <TableCell align="right">Amount</TableCell>
-                              <TableCell align="right">
-                                Total price ($)
-                              </TableCell>
-                            </TableRow>
-                          </TableHead>
-                          <TableBody>
-                            {row.history.map((historyRow) => (
-                              <TableRow key={historyRow.date}>
-                                <TableCell component="th" scope="row">
-                                  {historyRow.date}
-                                </TableCell>
-                                <TableCell>{historyRow.customerId}</TableCell>
-                                <TableCell align="right">
-                                  {historyRow.amount}
-                                </TableCell>
-                                <TableCell align="right">
-                                  {Math.round(
-                                    historyRow.amount * row.price * 100
-                                  ) / 100}
-                                </TableCell>
-                              </TableRow>
-                            ))}
-                          </TableBody>
-                        </Table> */}
-                        </Box>
-                        <Box sx={{ margin: 1, fontWeight: "bold" }}>
+                        <Box component="p" sx={{ margin: 1, fontWeight: "bold" }}>
                           Nhân sự:{" "}
                         </Box>
-                        <Box sx={{ margin: 1 }}>
+                        <Box component="p" sx={{ margin: 1 }}>
                           {getContentFromHTML(row.content).fullStaffs.map(
-                            (staff) => (
+                            (staff, index) => (
                               <Typography
-                                key={staff}
-                                component="p"
+                                key={index}
+                                component="span"
+                                display="block"
                                 marginLeft={"10px"}
                                 fontSize="0.875rem"
                               >
@@ -184,10 +191,10 @@ const TableAnime = () => {
                             )
                           )}
                         </Box>
-                        <Box sx={{ margin: 1, fontWeight: "bold" }}>
+                        <Box component="p" sx={{ margin: 1, fontWeight: "bold" }}>
                           Nội dung:{" "}
                         </Box>
-                        <Box sx={{ margin: 1 }}>
+                        <Box component="p" sx={{ margin: 1 }}>
                           {getContentFromHTML(row.content).fullSummary}
                         </Box>
                       </Collapse>
@@ -196,19 +203,36 @@ const TableAnime = () => {
                 </>
               ))
             ) : (
-              <Box sx={{display: 'flex', justifyContent: "center", alignItems: 'center', width: '100%'}}>
+              <TableRow colSpan={6}
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "auto",
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  mt: "20px",
+                }}
+              >
                 <Loading />
-              </Box>
+              </TableRow>
             )}
           </TableBody>
         </Table>
       </TableContainer>
       <Grid container>
-        <Grid item xs={6}>
-          <Chart chartTitle="Thống kê Anime theo thể loại" dataToShow={authContext.totalCountCategories}/>
+        <Grid item xs={12} md={12} xl={6}>
+          <Chart
+            chartTitle="Thống kê Anime theo thể loại"
+            dataToShow={authContext.totalCountCategories}
+          />
         </Grid>
-        <Grid item xs={6}>
-          <Chart chartTitle="Thống kê Số bộ anime mỗi thành viên tham gia" dataToShow={authContext.countAnimeByMember} />
+        <Grid item xs={12} md={12} xl={6}>
+          <Chart
+            chartTitle="Thống kê số bộ anime mỗi thành viên tham gia"
+            dataToShow={authContext.countAnimeByMember}
+          />
         </Grid>
       </Grid>
     </>
