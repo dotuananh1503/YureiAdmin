@@ -9,7 +9,7 @@ import {
 } from "chart.js";
 import 'chartjs-plugin-datalabels';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import React from "react";
+import React, { memo } from "react";
 import { Bar } from "react-chartjs-2";
 import { colors } from "../constants/colors";
 
@@ -57,4 +57,4 @@ const Chart = (props) => {
   return <Bar redraw fallbackContent={<>Loading...</>} options={options} data={data} />;
 };
 
-export default Chart;
+export default memo(Chart);

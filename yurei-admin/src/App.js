@@ -1,14 +1,15 @@
 import Box from "@mui/material/Box";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import { getAnimePosts, getComicPosts, getMemberList } from "./apis";
 import "./App.css";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import AuthContext from "./context";
+import Games from "./pages/Games";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import { countAnimeByMember, getAllCategories } from "./utils";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 function App() {
   const [user, setUser] = useState({});
@@ -32,6 +33,8 @@ function App() {
     }
   });
 
+
+
   useEffect(() => {
     getAnimePosts().then((response) => {
       setPostsLiveAction(response.liveActions);
@@ -53,7 +56,7 @@ function App() {
         animes: postsAnime,
         liveActions: postsLiveAction,
         comics: postsComic,
-        members: memberList,
+        members: memberList
       }}
     >
       <Box sx={{ width: "100vw", height: "100vh" }}>
@@ -75,6 +78,7 @@ function App() {
             }
           />
           <Route path="/login" element={<Login />} />
+          <Route path="/games" element={<Games />} />
         </Routes>
       </Box>
     </AuthContext.Provider>

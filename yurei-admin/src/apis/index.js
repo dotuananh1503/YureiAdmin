@@ -1,13 +1,6 @@
 import API from "../utils/http";
 import axios from "axios";
-
-const Global = {
-    ANIME_BLOG_ID: "7311086410835747408",
-    COMIC_BLOG_ID: "5955868275670099945",
-    API_KEY: "AIzaSyCCSz9pRZ_4Xr6Mp0_UGIvmgNh1xitoJaM",
-    MAX_RESULTS: 500,
-    RANGE: "all" 
-}
+import { Global } from "../constants";
 
 export const getAnimePosts = async () => {
     try {
