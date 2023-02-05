@@ -65,7 +65,7 @@ const useGetTopAnimes = (pagesToFetch) => {
             }
           );
           const anime = {
-            title: element.title.english || element.title.romaji,
+            title: element.title.romaji || element.title.english,
             characters: characterList,
             id: element.id,
             type: element.type,
