@@ -7,7 +7,8 @@ const AuthContext = createContext({
     animes: [],
     liveActions: [],
     comics: [],
-    members: []
+    members: [],
+    quizData: []
 });
 
 export default AuthContext;
