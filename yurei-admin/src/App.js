@@ -9,6 +9,7 @@ import AuthContext from "./context";
 import Games from "./pages/Games";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import Scores from "./pages/Scores";
 import { countAnimeByMember, getAllCategories } from "./utils";
 
 function App() {
@@ -79,6 +80,7 @@ function App() {
           />
           <Route path="/login" element={<Login />} />
           <Route path="/games" element={<Games />} />
+          <Route path="/scores" element={<Scores />} />
         </Routes>
       </Box>
     </AuthContext.Provider>

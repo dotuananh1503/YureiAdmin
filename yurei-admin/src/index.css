@@ -21,3 +21,8 @@ code {
 .flex-column {
   flex-direction: column;
 }
+
+.nav-link{
+  color: '#fff';
+  font-size: 1.5rem;
+}

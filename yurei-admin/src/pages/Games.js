@@ -1,15 +1,23 @@
 //import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box, Button, Input } from "@mui/material";
 import { useEffect, useState } from "react";
-import useGetTopAnimes from "../hooks/useGetTopAnimes";
-import shuffle from "shuffle-array";
 import { useTimer } from "react-timer-hook";
+import shuffle from "shuffle-array";
+import { savePlayerScores } from "../apis";
+import HeaderGame from "../components/HeaderGame";
+import Footer from "../components/Footer";
+import useGetTopAnimes from "../hooks/useGetTopAnimes";
+
+//const playerNameInStore = localStorage.getItem("playerName");
 
 const Games = () => {
   const rng = (max) => {
     return Math.floor(Math.random() * max);
   };
-  const PAGES_TO_GET = 10;
+  const PAGES_TO_GET = 5;
+  const [playerName, setPlayerName] = useState(localStorage.getItem("playerName") || "");
   const [playerIndex, setPlayerIndex] = useState(0);
+  const [showName, setShowName] = useState(true);
   const [animeList, setAnimeList] = useState();
   const correctAnime = animeList && animeList[playerIndex];
   const [correctChoiceIndex, setCorrectChoiceIndex] = useState();
@@ -21,9 +29,7 @@ const Games = () => {
   const [wrongChoices, setWrongChoices] = useState();
   const [wrongChoiceDone, setWrongChoiceDone] = useState(false);
 
-  const [charactersAlreadySeen, setCharactersAlreadySeen] = useState(
-    []
-  );
+  const [charactersAlreadySeen, setCharactersAlreadySeen] = useState([]);
 
   const randomizeChoices = () => {
     setWrongChoices(shuffle(shuffle.pick(animeList, { picks: 3 })));
@@ -88,7 +94,7 @@ const Games = () => {
         }
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wrongChoices]);
 
   const fetchResults = useGetTopAnimes(PAGES_TO_GET);
@@ -110,7 +116,7 @@ const Games = () => {
         }
       });
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [animeList]);
 
   useEffect(() => {
@@ -119,15 +125,15 @@ const Games = () => {
       shuffleAnimeList();
       myTimer.resume();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [doneFetching]);
 
   const nextCharacter = () => {
-    setPlayerIndex(playerIndex + 1);
+    setPlayerIndex(playerIndex + 100);
   };
   useEffect(() => {
     if (doneShuffling) randomizeChoices();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [playerIndex]);
 
   const [correctIndicator, setCorrectIndicator] = useState();
@@ -161,6 +167,7 @@ const Games = () => {
 
   const gameOver = () => {
     setIsGameOver(true);
+    localStorage.setItem("playerScore", playerIndex)
   };
 
   const timesUp = () => {
@@ -188,59 +195,73 @@ const Games = () => {
   useEffect(() => {
     myTimer.start();
     myTimer.pause();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [isGameOver, setIsGameOver] = useState(false);
 
   const resetGame = () => {
+    let playerScore = localStorage.getItem('playerScore') || 0;
     setIsGameOver(false);
     resetTimer();
     setPlayerIndex(0);
     shuffleAnimeList();
     setCorrectIndicator("");
+    savePlayerScores("Scores.json", playerName, playerScore);
   };
 
   const isPlural = (num) => {
     return num !== 1;
   };
 
+  const handleChangePlayerName = (e) => {
+    setPlayerName(e.target.value);
+  };
+
+  const handleSaveName = (e) => {
+    localStorage.setItem("playerName", playerName);
+    setShowName(false)
+  };
+
   return (
     <div>
+      <HeaderGame />
+      {(!localStorage.getItem("playerName") && showName) ? (
+        <Box>
+          <Input
+            value={playerName}
+            placeholder="Vui lòng nhập tên của bạn"
+            onChange={handleChangePlayerName}
+          />
+          <Button sx={{display: 'block'}} onClick={handleSaveName} variant="contained" color="primary">
+            Lưu
+          </Button>
+        </Box>
+      ): <Box><Button onClick={() => {setShowName(true); localStorage.removeItem("playerName")}}>Change Your Name</Button></Box>}
       {isGameOver ? (
         <div>
           <div>Game Over!</div>
-          <img
-            src={correctCharacter.image}
-            alt=""
-          ></img>
+          <img src={correctCharacter.image} alt=""></img>
           <div>
             This character is <strong>{correctCharacter.name}</strong> from{" "}
             <strong>{correctAnime.title}</strong>
           </div>
           <p>Your Score: {playerIndex}</p>
-          <button onClick={() => resetGame()}>
-            Play Again
-          </button>
+          <button onClick={() => resetGame()}>Play Again</button>
         </div>
       ) : !correctCharacter ? (
-        <>
+        <Box>
           <strong>Please wait...</strong>
           <p>
             Loading the top {fetchingList.length} / {PAGES_TO_GET * 50}{" "}
             animes...
           </p>
-        </>
+        </Box>
       ) : (
         <>
-          <img
-            src={correctCharacter.image}
-            alt=""
-          ></img>
+          <img src={correctCharacter.image} alt=""></img>
           <div>Your Score: {playerIndex}</div>
-          <div
-            style={{ color: secondsRemaining < 10 && "red" }}
-          >
+          <div style={{ color: secondsRemaining < 10 && "red" }}>
             {myTimer.isRunning
               ? (myTimer.minutes > 0
                   ? myTimer.minutes +
@@ -256,10 +277,7 @@ const Games = () => {
             {displayedChoices &&
               displayedChoices.map((item, idx) => {
                 return (
-                  <button
-                    key={idx}
-                    onClick={() => onChoose(idx)}
-                  >
+                  <button key={idx} onClick={() => onChoose(idx)}>
                     {item.title}
                   </button>
                 );
@@ -270,6 +288,7 @@ const Games = () => {
           {correctCharacter.name} */}
         </>
       )}
+      <Footer />
     </div>
   );
 };
