@@ -152,6 +152,7 @@ const Games = () => {
     } else {
       gameOver();
       setCorrectIndicator("INCORRECT, the answer was: " + correctAnime.title);
+      savePlayerScores("Scores.json", playerName, finalScore);
     }
   };
 
@@ -205,14 +206,14 @@ const Games = () => {
   const [isGameOver, setIsGameOver] = useState(false);
 
   const resetGame = () => {
-    let playerScore = localStorage.getItem("playerScore") || 0;
+    //let playerScore = localStorage.getItem("playerScore") || 0;
     setIsGameOver(false);
     resetTimer();
     setPlayerIndex(0);
     setFinalScore(0);
     shuffleAnimeList();
     setCorrectIndicator("");
-    savePlayerScores("Scores.json", playerName, playerScore);
+    //savePlayerScores("Scores.json", playerName, playerScore);
   };
 
   const isPlural = (num) => {
@@ -239,7 +240,11 @@ const Games = () => {
             onChange={handleChangePlayerName}
           />
           <Button
-            sx={{ display: "block" }}
+            sx={{
+              display: "block",
+              mt: "20px",
+              borderImage: "linear-gradient(to right, darkblue, darkorchid) 1",
+            }}
             onClick={handleSaveName}
             variant="contained"
             color="primary"
@@ -303,7 +308,7 @@ const Games = () => {
               : "Time's up"}
           </div>
           <div>This character is from...</div>
-          <Box sx={{width: '700px'}}>
+          <Box sx={{ width: "700px" }}>
             {displayedChoices &&
               displayedChoices.map((item, idx) => {
                 return (
@@ -311,8 +316,8 @@ const Games = () => {
                     variant="outlined"
                     sx={{
                       color: "#bf1520",
-                      width: '350px!important',
-                      height: '100px!important',
+                      width: "350px!important",
+                      height: "100px!important",
                       borderImage:
                         "linear-gradient(to right, darkblue, darkorchid) 1",
                     }}
