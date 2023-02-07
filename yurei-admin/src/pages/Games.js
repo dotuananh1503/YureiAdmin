@@ -15,8 +15,11 @@ const Games = () => {
     return Math.floor(Math.random() * max);
   };
   const PAGES_TO_GET = 5;
-  const [playerName, setPlayerName] = useState(localStorage.getItem("playerName") || "");
+  const [playerName, setPlayerName] = useState(
+    localStorage.getItem("playerName") || ""
+  );
   const [playerIndex, setPlayerIndex] = useState(0);
+  const [finalScore, setFinalScore] = useState(0);
   const [showName, setShowName] = useState(true);
   const [animeList, setAnimeList] = useState();
   const correctAnime = animeList && animeList[playerIndex];
@@ -129,7 +132,8 @@ const Games = () => {
   }, [doneFetching]);
 
   const nextCharacter = () => {
-    setPlayerIndex(playerIndex + 100);
+    setPlayerIndex(playerIndex + 1);
+    setFinalScore(finalScore + 100);
   };
   useEffect(() => {
     if (doneShuffling) randomizeChoices();
@@ -167,7 +171,7 @@ const Games = () => {
 
   const gameOver = () => {
     setIsGameOver(true);
-    localStorage.setItem("playerScore", playerIndex)
+    localStorage.setItem("playerScore", finalScore);
   };
 
   const timesUp = () => {
@@ -201,10 +205,11 @@ const Games = () => {
   const [isGameOver, setIsGameOver] = useState(false);
 
   const resetGame = () => {
-    let playerScore = localStorage.getItem('playerScore') || 0;
+    let playerScore = localStorage.getItem("playerScore") || 0;
     setIsGameOver(false);
     resetTimer();
     setPlayerIndex(0);
+    setFinalScore(0);
     shuffleAnimeList();
     setCorrectIndicator("");
     savePlayerScores("Scores.json", playerName, playerScore);
@@ -220,24 +225,40 @@ const Games = () => {
 
   const handleSaveName = (e) => {
     localStorage.setItem("playerName", playerName);
-    setShowName(false)
+    setShowName(false);
   };
 
   return (
     <div>
       <HeaderGame />
-      {(!localStorage.getItem("playerName") && showName) ? (
+      {!localStorage.getItem("playerName") && showName ? (
         <Box>
           <Input
             value={playerName}
-            placeholder="Vui lòng nhập tên của bạn"
+            placeholder="Please enter a name"
             onChange={handleChangePlayerName}
           />
-          <Button sx={{display: 'block'}} onClick={handleSaveName} variant="contained" color="primary">
+          <Button
+            sx={{ display: "block" }}
+            onClick={handleSaveName}
+            variant="contained"
+            color="primary"
+          >
             Lưu
           </Button>
         </Box>
-      ): <Box><Button onClick={() => {setShowName(true); localStorage.removeItem("playerName")}}>Change Your Name</Button></Box>}
+      ) : (
+        <Box>
+          <Button
+            onClick={() => {
+              setShowName(true);
+              localStorage.removeItem("playerName");
+            }}
+          >
+            Change Your Name
+          </Button>
+        </Box>
+      )}
       {isGameOver ? (
         <div>
           <div>Game Over!</div>
@@ -246,8 +267,17 @@ const Games = () => {
             This character is <strong>{correctCharacter.name}</strong> from{" "}
             <strong>{correctAnime.title}</strong>
           </div>
-          <p>Your Score: {playerIndex}</p>
-          <button onClick={() => resetGame()}>Play Again</button>
+          <p>Your Score: {finalScore}</p>
+          <Button
+            variant="outlined"
+            sx={{
+              color: "#bf1520",
+              borderImage: "linear-gradient(to right, darkblue, darkorchid) 1",
+            }}
+            onClick={() => resetGame()}
+          >
+            Play Again
+          </Button>
         </div>
       ) : !correctCharacter ? (
         <Box>
@@ -260,7 +290,7 @@ const Games = () => {
       ) : (
         <>
           <img src={correctCharacter.image} alt=""></img>
-          <div>Your Score: {playerIndex}</div>
+          <div>Your Score: {finalScore}</div>
           <div style={{ color: secondsRemaining < 10 && "red" }}>
             {myTimer.isRunning
               ? (myTimer.minutes > 0
@@ -273,16 +303,27 @@ const Games = () => {
               : "Time's up"}
           </div>
           <div>This character is from...</div>
-          <div>
+          <Box sx={{width: '700px'}}>
             {displayedChoices &&
               displayedChoices.map((item, idx) => {
                 return (
-                  <button key={idx} onClick={() => onChoose(idx)}>
+                  <Button
+                    variant="outlined"
+                    sx={{
+                      color: "#bf1520",
+                      width: '350px!important',
+                      height: '100px!important',
+                      borderImage:
+                        "linear-gradient(to right, darkblue, darkorchid) 1",
+                    }}
+                    key={idx}
+                    onClick={() => onChoose(idx)}
+                  >
                     {item.title}
-                  </button>
+                  </Button>
                 );
               })}
-          </div>
+          </Box>
           <div>{correctIndicator}</div>
           {/* {correctChoiceIndex}
           {correctCharacter.name} */}
