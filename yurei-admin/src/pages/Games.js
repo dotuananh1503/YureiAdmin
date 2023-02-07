@@ -249,7 +249,7 @@ const Games = () => {
             variant="contained"
             color="primary"
           >
-            Lưu
+            Save
           </Button>
         </Box>
       ) : (
