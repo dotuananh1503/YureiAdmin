@@ -1,5 +1,11 @@
 //import { Box, CircularProgress, Typography } from "@mui/material";
-import { Box, Button, Input } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Input,
+  Typography,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import { useTimer } from "react-timer-hook";
 import shuffle from "shuffle-array";
@@ -230,10 +236,10 @@ const Games = () => {
   };
 
   return (
-    <div>
+    <Box sx={{ display: "flex", height: "100%", flexDirection: "column" }}>
       <HeaderGame />
       {!localStorage.getItem("playerName") && showName ? (
-        <Box>
+        <Box sx={{ m: "10px" }}>
           <Input
             value={playerName}
             placeholder="Please enter a name"
@@ -246,7 +252,7 @@ const Games = () => {
               borderImage: "linear-gradient(to right, darkblue, darkorchid) 1",
             }}
             onClick={handleSaveName}
-            variant="contained"
+            variant="outlined"
             color="primary"
           >
             Save
@@ -264,78 +270,153 @@ const Games = () => {
           </Button>
         </Box>
       )}
-      {isGameOver ? (
-        <div>
-          <div>Game Over!</div>
-          <img src={correctCharacter.image} alt=""></img>
-          <div>
-            This character is <strong>{correctCharacter.name}</strong> from{" "}
-            <strong>{correctAnime.title}</strong>
-          </div>
-          <p>Your Score: {finalScore}</p>
-          <Button
-            variant="outlined"
+      <Box
+        sx={{
+          textAlign: "center",
+          fontSize: "2rem",
+          mb: "20px",
+          fontWeight: "bold",
+          textTransform: "uppercase",
+          background: "linear-gradient(to right, #30CFD0, #330867)",
+          backgroundClip: "text",
+          color: "transparent",
+        }}
+      >
+        Guess Anime Characters
+      </Box>
+      <Box className="flex-center">
+        {isGameOver ? (
+          <Box
+            className="flex-center flex-column"
             sx={{
-              color: "#bf1520",
-              borderImage: "linear-gradient(to right, darkblue, darkorchid) 1",
+              border: "3px solid black",
+              p: "20px",
+              borderImage: "linear-gradient(to right, #5C258D, #4389A2) 1",
             }}
-            onClick={() => resetGame()}
           >
-            Play Again
-          </Button>
-        </div>
-      ) : !correctCharacter ? (
-        <Box>
-          <strong>Please wait...</strong>
-          <p>
-            Loading the top {fetchingList.length} / {PAGES_TO_GET * 50}{" "}
-            animes...
-          </p>
-        </Box>
-      ) : (
-        <>
-          <img src={correctCharacter.image} alt=""></img>
-          <div>Your Score: {finalScore}</div>
-          <div style={{ color: secondsRemaining < 10 && "red" }}>
-            {myTimer.isRunning
-              ? (myTimer.minutes > 0
-                  ? myTimer.minutes +
-                    (isPlural(myTimer.minutes) ? " minutes " : " minute ")
-                  : "") +
-                (myTimer.seconds +
-                  (isPlural(myTimer.seconds) ? " seconds " : " second ") +
-                  "remaining")
-              : "Time's up"}
-          </div>
-          <div>This character is from...</div>
-          <Box sx={{ width: "700px" }}>
-            {displayedChoices &&
-              displayedChoices.map((item, idx) => {
-                return (
-                  <Button
-                    variant="outlined"
-                    sx={{
-                      color: "#bf1520",
-                      width: "350px!important",
-                      height: "100px!important",
-                      borderImage:
-                        "linear-gradient(to right, darkblue, darkorchid) 1",
-                    }}
-                    key={idx}
-                    onClick={() => onChoose(idx)}
-                  >
-                    {item.title}
-                  </Button>
-                );
-              })}
+            <Box
+              sx={{
+                textTransform: "uppercase",
+                fontSize: "1.2rem",
+                mb: "5px",
+                color: "red",
+                fontWeight: "bold",
+              }}
+            >
+              Game Over!
+            </Box>
+            <img src={correctCharacter.image} alt=""></img>
+            <Box sx={{ mt: "10px", fontSize: "1.2rem" }}>
+              This character is <strong>{correctCharacter.name}</strong> from{" "}
+              <strong>{correctAnime.title}</strong>
+            </Box>
+            <Box sx={{ fontSize: "1.3rem", my: "30px" }}>
+              Your Score: {finalScore}
+            </Box>
+            <Button
+              variant="outlined"
+              sx={{
+                color: "#bf1520",
+                borderImage:
+                  "linear-gradient(to right, darkblue, darkorchid) 1",
+              }}
+              onClick={() => resetGame()}
+            >
+              Play Again
+            </Button>
           </Box>
-          <div>{correctIndicator}</div>
-          {/* {correctChoiceIndex}
+        ) : !correctCharacter ? (
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              width: "200px",
+              border: "3px solid black",
+              p: "20px",
+              borderRadius: "100%",
+              borderImage: "linear-gradient(to right, #5C258D, #4389A2) 1",
+            }}
+          >
+            <strong>Please wait...</strong>
+            <p>
+              Loading the top {fetchingList.length} / {PAGES_TO_GET * 50}{" "}
+              animes...
+            </p>
+          </Box>
+        ) : (
+          <Box
+            sx={{
+              display: "flex",
+              mb: "30px",
+              justifyContent: "center",
+              flexDirection: "column",
+              alignItems: "center",
+              p: "20px",
+              border: "3px solid black",
+              borderImage: "linear-gradient(to right, #5C258D, #4389A2) 1",
+            }}
+          >
+            {correctCharacter.image ? (
+              <Typography
+                component="img"
+                width="250px"
+                src={correctCharacter.image }
+                alt=""
+              />
+            ) : (
+              <CircularProgress />
+            )}
+
+            <Box sx={{ fontSize: "1.5rem" }}>Your Score: {finalScore}</Box>
+            <Box
+              sx={{ color: secondsRemaining < 10 && "red", fontSize: "1.3rem" }}
+            >
+              {myTimer.isRunning
+                ? (myTimer.minutes > 0
+                    ? myTimer.minutes +
+                      (isPlural(myTimer.minutes) ? " minutes " : " minute ")
+                    : "") +
+                  (myTimer.seconds +
+                    (isPlural(myTimer.seconds) ? " seconds " : " second ") +
+                    "remaining")
+                : "Time's up"}
+            </Box>
+            <Box sx={{ fontSize: "1.4rem" }}>This character is from...</Box>
+            <Box sx={{ width: "718px" }}>
+              {displayedChoices &&
+                displayedChoices.map((item, idx) => {
+                  return (
+                    <Button
+                      variant="outlined"
+                      sx={{
+                        color: "#bf1520",
+                        width: "350px!important",
+                        borderWidth: "3px",
+                        m: "4px",
+                        height: "100px!important",
+                        borderImage:
+                          "linear-gradient(to right, darkblue, darkorchid) 1",
+                      }}
+                      key={idx}
+                      onClick={() => onChoose(idx)}
+                    >
+                      {item.title}
+                    </Button>
+                  );
+                })}
+            </Box>
+            <Box sx={{ color: "#00701e", fontWeight: "bold" }}>
+              {correctIndicator}
+            </Box>
+            {/* {correctChoiceIndex}
           {correctCharacter.name} */}
-        </>
-      )}
+          </Box>
+        )}
+      </Box>
+
       <Footer />
-    </div>
+    </Box>
   );
 };
 
