@@ -21,6 +21,13 @@ export const HeaderGame = () => {
       </Typography>
       <Box>
         <NavLink
+          to="/polls"
+          className={"nav-link"}
+          style={{ color: "#fff", textDecoration: "none", marginRight: "20px"}}
+        >
+          Polls
+        </NavLink>
+        <NavLink
           to="/scores"
           className={"nav-link"}
           style={{ color: "#fff", textDecoration: "none", marginRight: "20px"}}
