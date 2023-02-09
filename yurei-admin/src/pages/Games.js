@@ -1,9 +1,5 @@
 //import { Box, CircularProgress, Typography } from "@mui/material";
-import {
-  Box,
-  Button,
-  Input,
-} from "@mui/material";
+import { Box, Button, Input } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useTimer } from "react-timer-hook";
 import shuffle from "shuffle-array";
@@ -45,6 +41,7 @@ const Games = () => {
     setWrongChoiceDone(false);
   };
 
+
   const stringSimilarity = require("string-similarity");
   useEffect(() => {
     // prevent repeating seen characters
@@ -85,7 +82,7 @@ const Games = () => {
           containsBannedCharacters()
         ) {
           randomizeChoices();
-          console.warn("dupe problem");
+          console.warn("Just For Fun ^^");
         } else {
           // insert the correct answer from 0 to 3
           const correctIndex = rng(4);
@@ -269,21 +266,23 @@ const Games = () => {
           </Button>
         </Box>
       )}
-      <Box
-        sx={{
-          textAlign: "center",
-          fontSize: "2rem",
-          mb: "20px",
-          fontWeight: "bold",
-          textTransform: "uppercase",
-          background: "linear-gradient(to right, #30CFD0, #330867)",
-          backgroundClip: "text",
-          color: "transparent",
-        }}
-      >
-        Guess Anime Characters
-      </Box>
-      <Box className="flex-center">
+      {!correctCharacter && (
+        <Box
+          sx={{
+            textAlign: "center",
+            fontSize: "2rem",
+            mb: "20px",
+            fontWeight: "bold",
+            textTransform: "uppercase",
+            background: "linear-gradient(to right, #30CFD0, #330867)",
+            backgroundClip: "text",
+            color: "transparent",
+          }}
+        >
+          Guess Anime Characters
+        </Box>
+      )}
+      <Box className="flex-center" sx={{ height: "750px" }}>
         {isGameOver ? (
           <Box
             className="flex-center flex-column"
@@ -366,17 +365,6 @@ const Games = () => {
                 />
               )}
             </ProgressiveImage>
-            {/* {correctCharacter.image ? (
-              <Typography
-                component="img"
-                width="250px"
-                src={correctCharacter.image}
-                alt=""
-              />
-            ) : (
-              <CircularProgress />
-            )} */}
-
             <Box sx={{ fontSize: "1.5rem" }}>Your Score: {finalScore}</Box>
             <Box
               sx={{ color: secondsRemaining < 10 && "red", fontSize: "1.3rem" }}
