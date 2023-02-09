@@ -2,15 +2,14 @@
 import {
   Box,
   Button,
-  CircularProgress,
   Input,
-  Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useTimer } from "react-timer-hook";
 import shuffle from "shuffle-array";
 import { savePlayerScores } from "../apis";
 import HeaderGame from "../components/HeaderGame";
+import ProgressiveImage from "react-progressive-graceful-image";
 import Footer from "../components/Footer";
 import useGetTopAnimes from "../hooks/useGetTopAnimes";
 
@@ -357,16 +356,26 @@ const Games = () => {
               borderImage: "linear-gradient(to right, #5C258D, #4389A2) 1",
             }}
           >
-            {correctCharacter.image ? (
+            <ProgressiveImage src={correctCharacter.image} placeholder={""}>
+              {(src, loading) => (
+                <img
+                  className={`image${loading ? " loading" : " loaded"}`}
+                  src={src}
+                  alt=""
+                  width="250px"
+                />
+              )}
+            </ProgressiveImage>
+            {/* {correctCharacter.image ? (
               <Typography
                 component="img"
                 width="250px"
-                src={correctCharacter.image }
+                src={correctCharacter.image}
                 alt=""
               />
             ) : (
               <CircularProgress />
-            )}
+            )} */}
 
             <Box sx={{ fontSize: "1.5rem" }}>Your Score: {finalScore}</Box>
             <Box

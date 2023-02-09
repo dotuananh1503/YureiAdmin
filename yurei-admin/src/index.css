@@ -26,3 +26,12 @@ code {
   color: '#fff';
   font-size: 1.5rem;
 }
+
+.loading {
+  filter: blur(8px);
+  clip-path: inset(0);
+}
+.loaded {
+  filter: blur(0px);
+  transition: filter 0.3s linear;
+}
