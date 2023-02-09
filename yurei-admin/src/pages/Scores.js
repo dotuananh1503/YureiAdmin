@@ -3,6 +3,7 @@ import { ref, onValue } from "firebase/database";
 import { useEffect, useState } from "react";
 import Footer from "../components/Footer";
 import HeaderGame from "../components/HeaderGame";
+import ReactPlayer from 'react-player/youtube';
 import { db } from "../utils/firebase";
 
 const Scores = () => {
@@ -29,6 +30,7 @@ const Scores = () => {
       <Box
         sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
       >
+        <ReactPlayer url='https://www.youtube.com/watch?v=xXw_2_Rre70' controls/>
         <Box
           sx={{
             textAlign: "center",
