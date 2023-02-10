@@ -1,5 +1,6 @@
 import { LeafPoll} from 'react-leaf-polls'
 import 'react-leaf-polls/dist/index.css'
+import { saveFirebaseData } from '../apis'
 
 // Persistent data array (typically fetched from the server)
 const resData = [
@@ -20,6 +21,7 @@ const vote = (item, results) => {
   // and return the modified data to the server.
   console.log("res", results)
   console.log("item", item)
+  saveFirebaseData("Votes.json", results)
 }
 
 const Polls = () => {

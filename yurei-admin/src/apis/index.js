@@ -56,14 +56,12 @@ export const getMemberList = async (sheetID = 1) => {
   }
 }
 
-export const savePlayerScores = async (db_name="Scores.json", userName="Noname", userScores) => {
+export const saveFirebaseData = async (db_name="Scores.json", bodyData) => {
   try {
-    const response = await axios.post(`https://yurei-admin-default-rtdb.asia-southeast1.firebasedatabase.app/${db_name}`, {
-      playerName: userName,
-      playerScores: userScores
-    });
+    const response = await axios.post(`https://yurei-admin-default-rtdb.asia-southeast1.firebasedatabase.app/${db_name}`, bodyData);
     console.log(response.data);
   } catch (error) {
     return error;
   }
 }
+

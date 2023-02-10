@@ -3,7 +3,7 @@ import { Box, Button, Input } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useTimer } from "react-timer-hook";
 import shuffle from "shuffle-array";
-import { savePlayerScores } from "../apis";
+import { saveFirebaseData } from "../apis";
 import HeaderGame from "../components/HeaderGame";
 import ProgressiveImage from "react-progressive-graceful-image";
 import Footer from "../components/Footer";
@@ -154,7 +154,10 @@ const Games = () => {
     } else {
       gameOver();
       setCorrectIndicator("INCORRECT, the answer was: " + correctAnime.title);
-      savePlayerScores("Scores.json", playerName, finalScore);
+      saveFirebaseData("Scores.json", {
+        playerName,
+        playerScores: finalScore
+      });
     }
   };
 
