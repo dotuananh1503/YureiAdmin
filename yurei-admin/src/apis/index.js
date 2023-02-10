@@ -56,7 +56,7 @@ export const getMemberList = async (sheetID = 1) => {
   }
 }
 
-export const saveFirebaseData = async (db_name="Scores.json", bodyData) => {
+export const saveFirebaseData = async (db_name, bodyData) => {
   try {
     const response = await axios.post(`https://yurei-admin-default-rtdb.asia-southeast1.firebasedatabase.app/${db_name}`, bodyData);
     console.log(response.data);
