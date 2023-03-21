@@ -5,10 +5,10 @@ import { Route, Routes } from "react-router-dom";
 import { getAnimePosts, getComicPosts, getFolders, getMemberList } from "./apis";
 import "./App.css";
 import { ProtectedRoute } from "./components/ProtectedRoute";
-import UploadWidget from "./components/UploadWidget";
 import AuthContext from "./context";
 import Games from "./pages/Games";
 import Home from "./pages/Home";
+import Images from "./pages/Images";
 import Login from "./pages/Login";
 import Polls from "./pages/Polls";
 import Scores from "./pages/Scores";
@@ -82,7 +82,7 @@ function App() {
             }
           />
           <Route path="/login" element={<Login />} />
-          <Route path="/images" element={<UploadWidget />} />
+          <Route path="/images" element={<Images />} />
           <Route path="/games" element={<Games />} />
           <Route path="/scores" element={<Scores />} />
           <Route path="/polls" element={<Polls />} />
