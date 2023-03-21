@@ -1,7 +1,7 @@
 import { Box, Button, Typography } from "@mui/material";
 import { signOut } from "firebase/auth";
 import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import AuthContext from "../context";
 import { auth } from "../utils/firebase";
 
@@ -28,13 +28,31 @@ export const Header = () => {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        p: '20px'
+        p: "20px",
       }}
     >
-      <Typography sx={{ color: "#fff", fontWeight: "bold", fontSize: '1.5rem' }}>
-        Xin chào: {authContext.userInfo && authContext.userInfo.email}
-      </Typography>
-      <Button variant="text" sx={{color: '#fff', fontSize: '1.5rem'}} onClick={handleLogout}>Đăng xuất</Button>
+      <Box sx={{display: 'flex'}}>
+        <Typography
+          sx={{ color: "#fff", fontWeight: "bold", fontSize: "1.5rem" }}
+        >
+          Xin chào: {authContext.userInfo && authContext.userInfo.email}
+        </Typography>
+        <NavLink
+          to="/images"
+          className={"nav-link"}
+          style={{ color: "#fff", textDecoration: "none", marginLeft: "20px", fontWeight: "bold", borderLeft: '1px solid black', paddingLeft: '10px'}}
+        >
+          Images
+        </NavLink>
+      </Box>
+
+      <Button
+        variant="text"
+        sx={{ color: "#fff", fontSize: "1.5rem" }}
+        onClick={handleLogout}
+      >
+        Đăng xuất
+      </Button>
     </Box>
   );
 };

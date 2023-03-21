@@ -2,9 +2,10 @@ import Box from "@mui/material/Box";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
-import { getAnimePosts, getComicPosts, getMemberList } from "./apis";
+import { getAnimePosts, getComicPosts, getFolders, getMemberList } from "./apis";
 import "./App.css";
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import UploadWidget from "./components/UploadWidget";
 import AuthContext from "./context";
 import Games from "./pages/Games";
 import Home from "./pages/Home";
@@ -46,6 +47,7 @@ function App() {
     });
     getComicPosts().then((response) => setPostsComic(response));
     getMemberList().then((response) => setMemberList(response));
+    getFolders().then(response => console.log(response))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -80,6 +82,7 @@ function App() {
             }
           />
           <Route path="/login" element={<Login />} />
+          <Route path="/images" element={<UploadWidget />} />
           <Route path="/games" element={<Games />} />
           <Route path="/scores" element={<Scores />} />
           <Route path="/polls" element={<Polls />} />

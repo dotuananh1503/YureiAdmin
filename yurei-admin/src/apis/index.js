@@ -1,6 +1,7 @@
 import API from "../utils/http";
 import axios from "axios";
 import { Global } from "../constants";
+import {Buffer} from 'buffer';
 
 export const getAnimePosts = async () => {
     try {
@@ -63,5 +64,15 @@ export const saveFirebaseData = async (db_name="Scores.json", bodyData) => {
   } catch (error) {
     return error;
   }
+}
+
+export const getFolders = async (options = {}) => {
+  const response = await fetch(`https://api.cloudinary.com/v1_1/dxqpit0yk/resources/image`, {
+    headers: {
+      // eslint-disable-next-line no-useless-concat
+      Authorization: `Basic ${Buffer.from(`962357778471638` + ':' + `lAtoBaoOExMxxtUkbdLNsNlViX8`).toString('base64')}`
+    }
+  }).then(r => r.json());
+  return response;
 }
 
