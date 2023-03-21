@@ -12,7 +12,7 @@ const UploadWidget = () => {
       folder: "Yurei",
       sources: ["local"]
     }, (error, result) => {
-        console.log(result)
+        //console.log(result)
     });
   }, []);
 
